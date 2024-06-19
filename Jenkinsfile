@@ -80,8 +80,7 @@ pipeline {
             steps {
                 sh ''' 
                     npm install netlify-cli
-                    netlify --version
-                    netlify deploy --site $NETLIFY_SITE_ID --prod
+                    npx netlify --version
                 '''
             }
         }
