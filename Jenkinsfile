@@ -56,7 +56,7 @@ pipeline {
                     steps {
                         sh ''' 
                             npm install serve
-                            npx serve -s build -l 5000 &
+                            npx serve -s build -l 3000 &
                             sleep 10
                             npx playwright test --reporter=html
                         '''
@@ -81,6 +81,7 @@ pipeline {
                 sh ''' 
                     npm install netlify-cli
                     netlify --version
+                    netlify deploy --site $NETLIFY_SITE_ID --prod
                 '''
             }
         }
