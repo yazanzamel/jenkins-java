@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        NETLIFY_SITE_ID = 'a362ebc9-dc6a-4ec3-a871-75524f228f44'
+    }
+
     stages {
         stage('Build') {
             agent {
@@ -52,7 +56,7 @@ pipeline {
                     steps {
                         sh ''' 
                             npm install serve
-                            npx serve -s build &
+                            npx serve -s build -l 5000 &
                             sleep 10
                             npx playwright test --reporter=html
                         '''
@@ -65,7 +69,6 @@ pipeline {
                 }
             }
         }
-
 
         stage('Deploy') {
             agent {
@@ -83,17 +86,10 @@ pipeline {
         }
     }
 
-
-
-    
-
     post {
         always {
             // Add debug step to list the workspace contents
             sh 'ls -R'
-
-            // Publishing the HTML report from Playwright
-            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
         }
     }
 }
