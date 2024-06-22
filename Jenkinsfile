@@ -102,8 +102,8 @@ pipeline {
 
                     steps {
                         sh ''' 
-                            sudo apt-get update
-                            sudo apt-get install -y jq
+                            apt-get update
+                            apt-get install -y jq
                             export STAGING_URL=$(cat stage-deploy-output.json | jq -r '.deploy_url')
                             echo "Staging URL: ${STAGING_URL}"
                             npx playwright test --reporter=html --project=staging --base-url=${STAGING_URL}
