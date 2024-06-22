@@ -16,7 +16,7 @@ pipeline {
             }
             steps {
                 sh ''' 
-                    ls -la
+                    pwd
                     node --version
                     npm --version
                     npm ci 
@@ -90,6 +90,31 @@ pipeline {
                 '''
             }
         }
+
+        stage('Stage-e2e') {
+                    agent {
+                        docker {
+                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                            reuseNode true
+                        }
+                    }
+
+
+                    steps {
+                        sh ''' 
+                            sudo apt-get update
+                            sudo apt-get install -y jq
+                            export STAGING_URL=$(cat stage-deploy-output.json | jq -r '.deploy_url')
+                            echo "Staging URL: ${STAGING_URL}"
+                            npx playwright test --reporter=html --project=staging --base-url=${STAGING_URL}
+                        '''
+                    }
+                    post {
+                        always {
+                            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright Production HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+                        }
+                    }
+                }
 
         stage ('Approval') {
             steps{
