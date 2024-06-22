@@ -86,7 +86,7 @@ pipeline {
                     npm install netlify-cli
                     npx netlify --version
                     npx netlify status
-                    npx netlify deploy --dir=build
+                    npx netlify deploy --dir=build --json > stage-deploy-output.json
                 '''
             }
         }
@@ -114,7 +114,7 @@ pipeline {
                     npm install netlify-cli
                     npx netlify --version
                     npx netlify status
-                    npx netlify deploy --dir=build --prod
+                    npx netlify deploy --dir=build --prod --json > prod-deploy-output.json
                 '''
             }
         }
@@ -134,7 +134,7 @@ pipeline {
                     steps {
                         sh ''' 
                             
-                            npx playwright test --reporter=html
+                            npx playwright test --reporter=html 
                         '''
                     }
                     post {
