@@ -91,7 +91,6 @@ pipeline {
 
     post {
         always {
-            // Add debug step to list the workspace contents
             sh 'ls -R'
         }
     }
