@@ -12,7 +12,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn Jenkins on Udemy - YAZN
+          Learn Jenkins on Udemy - YAZN Zamel
         </a>
       </header>
       <p>
