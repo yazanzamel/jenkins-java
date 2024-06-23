@@ -107,7 +107,8 @@ pipeline {
                             export PATH=$PATH:$(pwd)
                             export STAGING_URL=$(cat stage-deploy-output.json | ./jq -r '.deploy_url')
                             echo "Staging URL: ${STAGING_URL}"
-                            npx playwright test --reporter=html --project=staging --base-url=${STAGING_URL}
+                            BASE_URL=${STAGING_URL} npx playwright test --reporter=html --project=staging
+            
                         '''
                     }
                     post {
@@ -160,7 +161,7 @@ pipeline {
                     steps {
                         sh ''' 
                             
-                            npx playwright test --reporter=html 
+                            npx playwright test --reporter=html --project=production
                         '''
                     }
                     post {
